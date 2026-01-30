@@ -1,15 +1,23 @@
+import { useState, useEffect } from 'react';
 import DocumentUpload from './components/DocumentUpload';
 import QueryInterface from './components/QueryInterface';
 import ResultsDisplay from './components/ResultsDisplay';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
 
 import useDocuments from './hooks/useDocuments';
 import useQuery from './hooks/useQuery';
+import useAuth from './hooks/useAuth';
 
 function App() {
+    const { user, login, register, logout, isAuthenticated } = useAuth();
+    const [showLogin, setShowLogin] = useState(true);
+
     const {
         documents,
         uploadDocuments,
         clearDocuments,
+        refreshDocuments,
         isProcessing,
         status: uploadStatus
     } = useDocuments();
@@ -25,7 +33,15 @@ function App() {
         clearQuery
     } = useQuery();
 
-    // Handle document upload
+    // Refresh documents periodically
+    useEffect(() => {
+        if (isAuthenticated) {
+            refreshDocuments();
+            const interval = setInterval(refreshDocuments, 5000);
+            return () => clearInterval(interval);
+        }
+    }, [isAuthenticated]);
+
     const handleUpload = async (files) => {
         await uploadDocuments(files);
     };
@@ -35,18 +51,21 @@ function App() {
         clearQuery();
     };
 
+    if (!isAuthenticated) {
+        return (
+            <Login
+                onLogin={login}
+                onRegister={register}
+                showLogin={showLogin}
+                setShowLogin={setShowLogin}
+            />
+        );
+    }
+
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
-            <div className="max-w-7xl mx-auto">
-                {/* Header */}
-                <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-lg rounded-lg shadow-2xl p-8 mb-6 border border-purple-500/20">
-                    <h1 className="text-5xl font-bold text-white mb-2">RAG System</h1>
-                    <p className="text-purple-200">Production-Ready Retrieval-Augmented Generation</p>
-                </div>
-
-                {/* Main Content */}
-                <div className="bg-white/5 backdrop-blur-lg rounded-lg shadow-2xl p-8 border border-white/10">
-
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+            <Dashboard user={user} onLogout={logout}>
+                <div className="space-y-6">
                     <DocumentUpload
                         documents={documents}
                         onUpload={handleUpload}
@@ -69,10 +88,9 @@ function App() {
                         answer={answer}
                     />
                 </div>
-            </div>
+            </Dashboard>
         </div>
     );
 }
 
 export default App;
-

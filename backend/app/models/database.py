@@ -29,6 +29,9 @@ def get_database_url():
     return f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_SERVER}/{settings.POSTGRES_DB}"
 
 def init_db():
+    # Import User model to ensure it's registered
+    from app.models.user import User  # noqa: F401
+    
     engine = create_engine(get_database_url())
     Base.metadata.create_all(bind=engine)
     return engine
