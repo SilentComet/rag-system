@@ -1,60 +1,156 @@
-# React RAG System
+# Production RAG System
 
-A modular, production-ready RAG (Retrieval-Augmented Generation) system built with React, Vite, and using Claude (Anthropic API) for semantic understanding and generation.
+A production-ready RAG (Retrieval-Augmented Generation) system with a FastAPI backend, React frontend, vector database (Qdrant), and PostgreSQL for metadata storage.
 
 ## Features
 
-- **Document Processing**: Supports TXT, MD, HTML, PDF, and DOCX.
-- **Intelligent Chunking**: text chunking with sentence boundary awareness.
-- **Semantic Search**: Uses Claude to extract concepts and generate embeddings (simulated).
-- **Interactive UI**: Modern, responsive interface built with Tailwind CSS.
-- **Production Guide**: Includes architecture recommendations for moving to production.
+- **Backend API**: FastAPI with async support, OpenAPI documentation
+- **Document Processing**: PDF, DOCX, TXT, MD support with text extraction
+- **Intelligent Chunking**: RecursiveCharacterTextSplitter with sentence boundary awareness
+- **Vector Search**: Qdrant vector database with hybrid search capabilities
+- **Embeddings**: OpenAI text-embedding-3-small for efficient semantic search
+- **RAG Pipeline**: Retrieval + Generation with citation support
+- **Modern UI**: React frontend with Tailwind CSS
+- **Production Ready**: Docker, CI/CD, logging, error handling
+
+## Architecture
+
+```
+┌─────────────┐      ┌──────────────┐      ┌─────────────┐
+│   React     │─────▶│   FastAPI    │─────▶│  Qdrant     │
+│  Frontend   │      │   Backend    │      │  (Vectors)  │
+└─────────────┘      └──────────────┘      └─────────────┘
+                            │
+                            ▼
+                     ┌─────────────┐
+                     │ PostgreSQL  │
+                     │ (Metadata)  │
+                     └─────────────┘
+```
+
+## Quick Start
+
+### Prerequisites
+- Docker & Docker Compose
+- OpenAI API Key
+
+### Local Development
+
+1. **Clone and Setup**
+   ```bash
+   git clone <repository-url>
+   cd rag-system
+   ```
+
+2. **Configure Environment**
+   ```bash
+   # Backend
+   cp backend/.env.example backend/.env
+   # Edit backend/.env and add your OPENAI_API_KEY
+   
+   # Frontend
+   cp frontend/.env.example frontend/.env
+   ```
+
+3. **Start Services**
+   ```bash
+   docker-compose up
+   ```
+
+4. **Access**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
+   - API Docs: http://localhost:8000/docs
 
 ## Project Structure
 
 ```
 rag-system/
-├── src/
-│   ├── components/  # reusable UI components
-│   ├── hooks/       # custom React hooks for logic
-│   ├── services/    # API and business logic services
-│   ├── utils/       # helper functions
-│   └── constants/   # configuration and constants
-└── ...
+├── backend/
+│   ├── app/
+│   │   ├── api/routes/      # API endpoints
+│   │   ├── core/            # Configuration, logging
+│   │   ├── models/          # Database & Pydantic models
+│   │   ├── services/        # Business logic (RAG, embeddings, etc.)
+│   │   └── main.py          # FastAPI entry point
+│   ├── Dockerfile
+│   └── requirements.txt
+├── frontend/
+│   ├── src/
+│   │   ├── components/      # React components
+│   │   ├── hooks/           # Custom hooks
+│   │   └── services/        # API client
+│   ├── Dockerfile
+│   └── package.json
+└── docker-compose.yml
+
 ```
 
-## Setup & Installation
+## API Endpoints
 
-1.  **Install Dependencies**
-    ```bash
-    npm install
-    ```
+- `POST /api/v1/documents/upload` - Upload document for processing
+- `GET /api/v1/documents` - List all documents with status
+- `DELETE /api/v1/documents/{id}` - Delete document
+- `POST /api/v1/search` - Semantic search (returns chunks)
+- `POST /api/v1/chat` - RAG query (returns answer + citations)
 
-2.  **Environment Setup**
-    Copy `.env.example` to `.env` and add your Anthropic API key:
-    ```bash
-    cp .env.example .env
-    ```
-    Edit `.env` and set `VITE_ANTHROPIC_API_KEY`.
+See full API documentation at `/docs` when running.
 
-    > **⚠️ Security Warning**: In a real production app, never expose your API keys in the frontend. Use a backend proxy. This project is a demonstration of the RAG architecture.
+## Deployment
 
-3.  **Run Development Server**
-    ```bash
-    npm run dev
-    ```
+### Docker Compose (Recommended for Development)
+```bash
+docker-compose up -d
+```
 
-## Architecture
+### Cloud Deployment
 
-- **Frontend**: React + Vite
-- **Styling**: Tailwind CSS
-- **Concept Extraction**: Claude 3.5 Sonnet (via API)
-- **Vector Store**: In-memory (simulated)
-- **Embeddings**: Concept-boosted character frequency (simulated hybrid approach)
+**AWS/GCP/Azure:**
+1. Build and push images to container registry
+2. Deploy using ECS/Cloud Run/Container Instances
+3. Set up managed PostgreSQL and Qdrant (or use cloud alternatives)
+4. Configure environment variables
 
-## Moving to Production
+**Environment Variables:**
+- `OPENAI_API_KEY` - Required for embeddings and LLM
+- `QDRANT_URL` - Qdrant connection URL
+- `POSTGRES_SERVER`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`
 
-See the "Production Architecture Recommendations" section in the app for a detailed guide on how to scale this system using:
-- Dedicated Vector DB (Pinecone/Weaviate)
-- Real Embeddings (OpenAI/Cohere)
-- Backend API (Python/Node.js)
+## Testing
+
+```bash
+# Backend tests
+cd backend
+pip install pytest pytest-cov
+pytest --cov=app
+
+# Frontend tests
+cd frontend
+npm run test
+```
+
+## Performance & Scaling
+
+- **Caching**: Add Redis for query result caching
+- **Async Workers**: Use Celery or Arq for background document processing
+- **Load Balancing**: Deploy multiple backend instances behind a load balancer
+- **Vector DB Scaling**: Qdrant supports clustering and sharding
+
+## Security
+
+- API keys stored in environment variables (never in code)
+- CORS configured for production origins
+- HTTPS/TLS in production deployments
+- Database credentials secured via secrets management
+
+## Monitoring
+
+Add monitoring with:
+- Prometheus + Grafana for metrics
+- Sentry for error tracking
+- Structured logging to CloudWatch/Stackdriver
+
+## License
+
+MIT
+

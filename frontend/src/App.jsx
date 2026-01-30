@@ -3,7 +3,6 @@ import QueryInterface from './components/QueryInterface';
 import ResultsDisplay from './components/ResultsDisplay';
 
 import useDocuments from './hooks/useDocuments';
-import useVectorStore from './hooks/useVectorStore';
 import useQuery from './hooks/useQuery';
 
 function App() {
@@ -16,12 +15,6 @@ function App() {
     } = useDocuments();
 
     const {
-        vectorStore,
-        addVectors,
-        clearVectors
-    } = useVectorStore();
-
-    const {
         query,
         setQuery,
         executeQuery,
@@ -30,19 +23,15 @@ function App() {
         isQuerying,
         queryStatus,
         clearQuery
-    } = useQuery(vectorStore);
+    } = useQuery();
 
-    // Handle document upload and vector store update
+    // Handle document upload
     const handleUpload = async (files) => {
-        const processedVectors = await uploadDocuments(files);
-        if (processedVectors.length > 0) {
-            addVectors(processedVectors);
-        }
+        await uploadDocuments(files);
     };
 
     const handleClearAll = () => {
         clearDocuments();
-        clearVectors();
         clearQuery();
     };
 
@@ -64,7 +53,6 @@ function App() {
                         onClear={handleClearAll}
                         isProcessing={isProcessing}
                         status={uploadStatus}
-                        vectorStore={vectorStore}
                     />
 
                     <QueryInterface
@@ -72,7 +60,7 @@ function App() {
                         setQuery={setQuery}
                         onSearch={executeQuery}
                         isQuerying={isQuerying}
-                        hasDocuments={vectorStore.length > 0}
+                        hasDocuments={documents.length > 0}
                         status={queryStatus}
                     />
 
@@ -81,11 +69,10 @@ function App() {
                         answer={answer}
                     />
                 </div>
-
-                {/* Production Architecture Guide */}
             </div>
         </div>
     );
 }
 
 export default App;
+
