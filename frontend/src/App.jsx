@@ -63,7 +63,7 @@ function App() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <div className="min-h-screen bg-transparent relative z-10 text-white">
             <Dashboard user={user} onLogout={logout}>
                 <div className="space-y-6">
                     <DocumentUpload

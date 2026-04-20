@@ -47,7 +47,7 @@ const ResultsDisplay = ({ relevantChunks, answer }) => {
                         <Brain className="w-5 h-5 text-purple-400" />
                         Generated Answer
                     </h3>
-                    <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 p-6 rounded-lg border border-purple-500/30">
+                    <div className="bg-white/5 p-6 rounded-2xl border border-white/5">
                         <p className="text-white leading-relaxed whitespace-pre-wrap">{answer}</p>
                     </div>
                 </div>

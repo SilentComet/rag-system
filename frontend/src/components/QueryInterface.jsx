@@ -30,7 +30,7 @@ const QueryInterface = ({
                 <button
                     onClick={onSearch}
                     disabled={!query.trim() || !hasDocuments || isQuerying}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-3 rounded-lg hover:from-purple-700 hover:to-pink-700 disabled:from-gray-600 disabled:to-gray-600 transition-all shadow-lg flex items-center gap-2"
+                    className="bg-white/10 border border-white/20 text-white px-8 py-3 rounded-xl hover:bg-white/20 disabled:opacity-50 transition-all duration-500 ease-aristide shadow-md flex items-center gap-2"
                 >
                     {isQuerying ? (
                         <>

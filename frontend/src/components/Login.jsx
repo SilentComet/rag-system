@@ -24,8 +24,8 @@ export default function Login({ onLogin, onRegister, showLogin, setShowLogin }) 
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-6">
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-8 w-full max-w-md border border-white/20">
+        <div className="min-h-screen bg-transparent relative z-10 text-white flex items-center justify-center p-6">
+            <div className="bg-white/5 backdrop-blur-2xl rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] p-10 w-full max-w-md border border-white/10 transition-all duration-1000 ease-aristide hover:border-white/20">
                 <div className="text-center mb-8">
                     <h1 className="text-4xl font-bold text-white mb-2">
                         RAG System
@@ -36,9 +36,9 @@ export default function Login({ onLogin, onRegister, showLogin, setShowLogin }) 
                 <div className="flex gap-2 mb-6">
                     <button
                         onClick={() => setShowLogin(true)}
-                        className={`flex-1 py-2 px-4 rounded-lg transition ${showLogin
-                                ? 'bg-purple-600 text-white'
-                                : 'bg-white/5 text-purple-200 hover:bg-white/10'
+                        className={`flex-1 py-2 px-4 rounded-xl transition-all duration-700 ease-aristide hover:-translate-y-0.5 ${showLogin
+                                ? 'bg-white/10 text-white shadow-lg border border-white/20'
+                                : 'bg-transparent text-purple-300 hover:text-white'
                             }`}
                     >
                         <LogIn className="inline mr-2 h-4 w-4" />
@@ -46,9 +46,9 @@ export default function Login({ onLogin, onRegister, showLogin, setShowLogin }) 
                     </button>
                     <button
                         onClick={() => setShowLogin(false)}
-                        className={`flex-1 py-2 px-4 rounded-lg transition ${!showLogin
-                                ? 'bg-purple-600 text-white'
-                                : 'bg-white/5 text-purple-200 hover:bg-white/10'
+                        className={`flex-1 py-2 px-4 rounded-xl transition-all duration-700 ease-aristide hover:-translate-y-0.5 ${!showLogin
+                                ? 'bg-white/10 text-white shadow-lg border border-white/20'
+                                : 'bg-transparent text-purple-300 hover:text-white'
                             }`}
                     >
                         <UserPlus className="inline mr-2 h-4 w-4" />
@@ -63,7 +63,7 @@ export default function Login({ onLogin, onRegister, showLogin, setShowLogin }) 
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:border-purple-400"
+                            className="w-full px-4 py-3 bg-black/20 border border-white/5 rounded-xl text-white placeholder-purple-300/50 focus:outline-none focus:border-white/30 focus:bg-white/5 transition-all duration-700 ease-aristide"
                             placeholder="you@example.com"
                             required
                         />
@@ -76,7 +76,7 @@ export default function Login({ onLogin, onRegister, showLogin, setShowLogin }) 
                                 type="text"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:border-purple-400"
+                                className="w-full px-4 py-3 bg-black/20 border border-white/5 rounded-xl text-white placeholder-purple-300/50 focus:outline-none focus:border-white/30 focus:bg-white/5 transition-all duration-700 ease-aristide"
                                 placeholder="johndoe"
                                 required
                             />
@@ -89,7 +89,7 @@ export default function Login({ onLogin, onRegister, showLogin, setShowLogin }) 
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:border-purple-400"
+                            className="w-full px-4 py-3 bg-black/20 border border-white/5 rounded-xl text-white placeholder-purple-300/50 focus:outline-none focus:border-white/30 focus:bg-white/5 transition-all duration-700 ease-aristide"
                             placeholder="••••••••"
                             required
                         />
@@ -104,7 +104,7 @@ export default function Login({ onLogin, onRegister, showLogin, setShowLogin }) 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition disabled:opacity-50"
+                        className="w-full py-4 px-4 mt-4 bg-white/5 backdrop-blur-md text-white rounded-xl font-medium tracking-wide border border-white/10 hover:bg-white/10 hover:border-white/30 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(255,255,255,0.1)] transition-all duration-700 ease-aristide disabled:opacity-50 disabled:hover:translate-y-0"
                     >
                         {loading ? 'Please wait...' : showLogin ? 'Login' : 'Create Account'}
                     </button>

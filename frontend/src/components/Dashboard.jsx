@@ -5,7 +5,7 @@ export default function Dashboard({ user, onLogout, children }) {
         <div className="min-h-screen p-6">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-lg rounded-lg shadow-2xl p-6 mb-6 border border-purple-500/20">
+                <div className="bg-white/5 backdrop-blur-2xl rounded-2xl shadow-[0_4px_24px_0_rgba(0,0,0,0.2)] p-6 mb-6 border border-white/5">
                     <div className="flex justify-between items-center">
                         <div>
                             <h1 className="text-4xl font-bold text-white mb-1">
