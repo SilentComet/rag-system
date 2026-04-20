@@ -16,10 +16,10 @@ A production-ready RAG (Retrieval-Augmented Generation) system with a FastAPI ba
 ## Architecture
 
 ```
-┌─────────────┐      ┌──────────────┐      ┌─────────────┐
+┌─────────────┐      ┌──────────────┐       ┌─────────────┐
 │   React     │─────▶│   FastAPI    │─────▶│  Qdrant     │
-│  Frontend   │      │   Backend    │      │  (Vectors)  │
-└─────────────┘      └──────────────┘      └─────────────┘
+│  Frontend   │      │   Backend    │       │  (Vectors)  │
+└─────────────┘      └──────────────┘       └─────────────┘
                             │
                             ▼
                      ┌─────────────┐
